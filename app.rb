@@ -15,10 +15,11 @@ get '/' do
   "Hello"
 end
 
-get '/send' do
-  #raw = request.env["rack.input"].read
+post '/send' do
+  raw = request.env["rack.input"].read
 
   Pony.mail(:to => 'simon@simonmaddox.com', :from => 'simon@simonmaddox.com', :subject => 'hi', :body => 'Hello there.',
+  :attachments => {"photo.jpg", raw}
   :via => :smtp, :via_options => SMTP_OPTIONS
   )
   
