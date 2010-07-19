@@ -18,7 +18,7 @@ end
 post '/send/:filename/:to' do
   raw = request.env["rack.input"].read
 
-  Pony.mail(:to => unescape(params[:to]), :from => 'simon@simonmaddox.com', :subject => 'Photo Shared', :body => 'This photo was automatically sent by <a href="#">PhotoShare</a>',
+  Pony.mail(:to => unescape(params[:to]), :from => 'simon@simonmaddox.com', :subject => 'Photo Shared', :body: => "This photo was automatically sent by PhotoShare", :html_body => 'This photo was automatically sent by <a href="#">PhotoShare</a>',
   :attachments => {unescape(params[:filename]), raw},
   :via => :smtp, :via_options => SMTP_OPTIONS
   )
