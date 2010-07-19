@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra'
-require 'actionmailer'
+require 'pony'
 
 require 'app'
 run Sinatra::Application

@@ -1,21 +1,25 @@
 require 'rubygems'
 require 'sinatra'
-require 'actionmailer'
+require 'pony'
+
+SMTP_OPTIONS = {
+    :address        => "smtp.sendgrid.net",
+    :port           => "25",
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => ENV['SENDGRID_DOMAIN'],
+}
 
 get '/' do
   "Hello"
 end
 
-post '/send/:to' do
-  raw = request.env["rack.input"].read
-  
-  ActionMailer::Base.smtp_settings = {
-    :address        => "smtp.sendgrid.net",
-    :port           => "25",
-    :authentication => :plain,
-    :user_name      => "simon@simonmaddox.com",
-    :password       => "mx463yp",
-    #:domain         => ENV['SENDGRID_DOMAIN'],
-  }
+get '/send' do
+  #raw = request.env["rack.input"].read
+
+  Pony.mail(:to => 'simon@simonmaddox.com', :from => 'simon@simonmaddox.com', :subject => 'hi', :body => 'Hello there.',
+  :via => :smtp, :via_options => SMTP_OPTIONS
+  )
   
 end
