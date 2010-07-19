@@ -15,11 +15,11 @@ get '/' do
   "Hello"
 end
 
-post '/send' do
+post '/send/:filename/:to' do
   raw = request.env["rack.input"].read
 
-  Pony.mail(:to => 'simon@simonmaddox.com', :from => 'simon@simonmaddox.com', :subject => 'hi', :body => 'Hello there.',
-  :attachments => {"photo.jpg", raw},
+  Pony.mail(:to => unescape(params[:to]), :from => 'simon@simonmaddox.com', :subject => 'hi', :body => 'Hello there.',
+  :attachments => {unescape(params[:filename]), raw},
   :via => :smtp, :via_options => SMTP_OPTIONS
   )
   
